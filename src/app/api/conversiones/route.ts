@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 export async function POST(req: NextRequest) {
   const { codigo, producto, monto } = await req.json();
 
@@ -8,7 +10,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Faltan datos" }, { status: 400 });
   }
 
-  // Buscar al referido por su código
   const referidoSnap = await adminDb
     .collection("referidos")
     .where("codigo", "==", codigo)
@@ -26,7 +27,6 @@ export async function POST(req: NextRequest) {
   const montoNum = Number(monto);
   const comision = (montoNum * referido.comisionPropia) / 100;
 
-  // Ver si tiene padrino (alguien que lo invitó) para la comisión de segundo nivel
   let comisionPadrino = null;
   let padrinoId = null;
 

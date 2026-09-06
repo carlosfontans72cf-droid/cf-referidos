@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
   const token = authHeader?.replace("Bearer ", "");
@@ -23,20 +25,17 @@ export async function GET(req: NextRequest) {
   }
   const referido = referidoDoc.data()!;
 
-  // Contar visitas de su código
   const visitasSnap = await adminDb
     .collection("visitas")
     .where("codigo", "==", referido.codigo)
     .get();
 
-  // Sus propias ventas
   const conversionesSnap = await adminDb
     .collection("conversiones")
     .where("referidoId", "==", uid)
     .orderBy("fecha", "desc")
     .get();
 
-  // Ventas donde él es el padrino (comisión de segundo nivel)
   const comoPadrinoSnap = await adminDb
     .collection("conversiones")
     .where("padrinoId", "==", uid)

@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminDb, adminAuth } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 function generarCodigo(nombre: string, apellido: string) {
   const base = `${nombre}${apellido}`.toLowerCase().replace(/[^a-z0-9]/g, "");
-  const sufijo = Math.floor(100 + Math.random() * 900); // 3 dígitos random para evitar choques
+  const sufijo = Math.floor(100 + Math.random() * 900);
   return `${base}${sufijo}`;
 }
 
@@ -31,7 +33,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Esta invitación ya fue usada o expiró" }, { status: 400 });
   }
 
-  // Crear usuario en Firebase Auth
   const userRecord = await adminAuth.createUser({
     email: invitacion.email,
     password,
@@ -40,7 +41,6 @@ export async function POST(req: NextRequest) {
 
   const codigo = generarCodigo(invitacion.nombre, invitacion.apellido);
 
-  // Crear documento del referido
   await adminDb.collection("referidos").doc(userRecord.uid).set({
     nombre: invitacion.nombre,
     apellido: invitacion.apellido,
@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
     fechaAlta: new Date(),
   });
 
-  // Marcar invitación como usada
   await invitacionDoc.ref.update({ estado: "usada" });
 
   return NextResponse.json({ codigo });

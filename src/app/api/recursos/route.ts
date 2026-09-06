@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   const snap = await adminDb
     .collection("recursos")

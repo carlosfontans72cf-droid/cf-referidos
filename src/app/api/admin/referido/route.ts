@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebase-admin";
 import { verifyAdmin } from "@/lib/verifyAdmin";
 
+export const runtime = "nodejs";
+
 export async function GET(req: NextRequest) {
   const uid = await verifyAdmin(req);
   if (!uid) {
