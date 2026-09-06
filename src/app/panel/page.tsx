@@ -16,7 +16,7 @@ export default function PanelRedirectPage() {
     }
 
     if (isAdmin) {
-      router.push("/admin/venta");
+      router.push("/admin");
     } else {
       router.push("/panel/referido");
     }
