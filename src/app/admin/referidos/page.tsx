@@ -61,6 +61,13 @@ export default function AdminReferidosPage() {
     setGuardandoId(null);
   }
 
+  function compartirPorWhatsapp(codigo: string) {
+    const link = `${window.location.origin}/r/${codigo}`;
+    const mensaje = `¡Hola! Te comparto este link: ${link}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <RequireAdmin>
       <div className="max-w-4xl mx-auto mt-10 p-6">
@@ -83,6 +90,7 @@ export default function AdminReferidosPage() {
                 <th className="py-2">% Propia</th>
                 <th className="py-2">% Invitados</th>
                 <th className="py-2">Activo</th>
+                <th className="py-2"></th>
                 <th className="py-2"></th>
               </tr>
             </thead>
@@ -122,6 +130,14 @@ export default function AdminReferidosPage() {
                       className="bg-blue-600 text-white text-xs px-3 py-1 rounded"
                     >
                       {guardandoId === r.id ? "Guardando..." : "Guardar"}
+                    </button>
+                  </td>
+                  <td className="py-2">
+                    <button
+                      onClick={() => compartirPorWhatsapp(r.codigo)}
+                      className="bg-green-600 text-white text-xs px-3 py-1 rounded"
+                    >
+                      WhatsApp
                     </button>
                   </td>
                 </tr>

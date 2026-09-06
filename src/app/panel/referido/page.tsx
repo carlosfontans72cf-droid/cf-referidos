@@ -81,6 +81,13 @@ export default function PanelReferidoPage() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
 
+  function compartirPorWhatsapp(codigo: string) {
+    const link = `${window.location.origin}/r/${codigo}`;
+    const mensaje = `¡Hola! Te comparto este link: ${link}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <RequireReferido>
       <div className="max-w-2xl mx-auto mt-10 p-6">
@@ -105,9 +112,15 @@ export default function PanelReferidoPage() {
 
             <div className="bg-gray-100 rounded p-4 mb-6 break-all">
               <p className="text-sm text-gray-600 mb-1">Tu link para compartir:</p>
-              <p className="font-mono text-sm">
+              <p className="font-mono text-sm mb-3">
                 {typeof window !== "undefined" ? window.location.origin : ""}/r/{data.codigo}
               </p>
+              <button
+                onClick={() => compartirPorWhatsapp(data.codigo)}
+                className="bg-green-600 text-white text-sm px-4 py-2 rounded"
+              >
+                Compartir por WhatsApp
+              </button>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
