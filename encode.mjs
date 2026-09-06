@@ -14,4 +14,7 @@ if (value.startsWith('"') && value.endsWith('"')) {
 }
 
 const base64 = Buffer.from(value, "utf-8").toString("base64");
-console.log(base64);
+
+fs.writeFileSync("vercel-key.env", `FIREBASE_ADMIN_PRIVATE_KEY_BASE64=${base64}\n`);
+
+console.log("Listo, se creó el archivo vercel-key.env");
